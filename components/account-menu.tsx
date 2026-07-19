@@ -1,0 +1,4 @@
+"use client";
+import { useEffect, useState } from "react"; import Link from "next/link"; import { supabase } from "../lib/supabase";
+export default function AccountMenu(){const [name,setName]=useState<string|null>(null),[open,setOpen]=useState(false);useEffect(()=>{supabase?.auth.getSession().then(({data})=>setName(data.session?.user.user_metadata?.full_name||null));const sub=supabase?.auth.onAuthStateChange((_e,s)=>setName(s?.user.user_metadata?.full_name||null));return()=>sub?.data.subscription.unsubscribe()},[]);if(!name)return <Link href="/login" className="login">登录</Link>;return <div className="account"><button className="account-button" onClick={()=>setOpen(!open)}><span>{name.slice(0,1)}</span>{name}⌄</button>{open&&<div className="account-menu"><Link href="/account">个人账户</Link><small>学生账号</small><button onClick={async()=>{await supabase?.auth.signOut();window.location.href="/"}}>退出登录</button></div>}</div>}
+
