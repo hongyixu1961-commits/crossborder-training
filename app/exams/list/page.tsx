@@ -1,0 +1,7 @@
+"use client";
+import {useEffect,useState} from "react";
+import Link from "next/link";
+import {supabase} from "../../../lib/supabase";
+import AccountMenu from "../../../components/account-menu";
+type Exam={id:string;title:string;description:string;duration_minutes:number;pass_score:number};
+export default function ExamList(){const [exams,setExams]=useState<Exam[]>([]);const [message,setMessage]=useState("正在加载考试…");useEffect(()=>{supabase?.from("exams").select("id,title,description,duration_minutes,pass_score").eq("published",true).order("created_at",{ascending:true}).then(({data,error})=>{if(error)setMessage(error.message);else{setExams(data||[]);setMessage(data?.length?"":"暂无已发布考试")}})},[]);return <main><header><Link href="/" className="brand">✦ CrossBorder <b>Academy</b></Link><nav><Link href="/">首页</Link><Link href="/learning">学习中心</Link><a>考试中心</a></nav><AccountMenu/></header><section className="content"><p className="eyebrow">EXAM CENTER</p><h1>选择考试</h1><p className="lead">请根据培训周次选择对应考试。</p>{exams.length?<div style={{display:"grid",gap:16,maxWidth:820}}>{exams.map((e,i)=><Link key={e.id} href={"/exams?exam="+e.id} className="exam-card" style={{display:"block",textDecoration:"none",color:"inherit"}}><small>第 {i+1} 套考试</small><h2>{e.title}</h2><p>{e.description}</p><span>共 {e.duration_minutes} 分钟 · 及格分 {e.pass_score} 分　→</span></Link>)}</div>:<p className="lead">{message}</p>}</section></main>}
