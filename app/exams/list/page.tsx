@@ -3,5 +3,48 @@ import {useEffect,useState} from "react";
 import Link from "next/link";
 import {supabase} from "../../../lib/supabase";
 import AccountMenu from "../../../components/account-menu";
-type Exam={id:string;title:string;description:string;duration_minutes:number;pass_score:number};
-export default function ExamList(){const [exams,setExams]=useState<Exam[]>([]);const [message,setMessage]=useState("正在加载考试…");useEffect(()=>{supabase?.from("exams").select("id,title,description,duration_minutes,pass_score").eq("published",true).order("created_at",{ascending:true}).then(({data,error})=>{if(error)setMessage(error.message);else{setExams(data||[]);setMessage(data?.length?"":"暂无已发布考试")}})},[]);return <main><header><Link href="/" className="brand">✦ CrossBorder <b>Academy</b></Link><nav><Link href="/">首页</Link><Link href="/learning">学习中心</Link><a>考试中心</a></nav><AccountMenu/></header><section className="content"><p className="eyebrow">EXAM CENTER</p><h1>选择考试</h1><p className="lead">请根据培训周次选择对应考试。</p>{exams.length?<div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:20,maxWidth:1100}}>{exams.map((e,i)=><Link key={e.id} href={"/exams?exam="+e.id} style={{display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:250,padding:26,background:"#fff",border:"1px solid #e5ded2",borderRadius:16,textDecoration:"none",color:"#163d35",boxShadow:"0 12px 30px rgba(22,61,53,.06)"}}><div><small style={{display:"inline-block",padding:"6px 10px",borderRadius:999,background:"#e8f0e6",fontWeight:700}}>第 {i===0?"一":i===1?"三":"四"} 周</small><h2 style={{fontSize:24,lineHeight:1.35,margin:"22px 0 10px"}}>{e.title.replace(/考试$/,"")}</h2><p style={{color:"#68716c",lineHeight:1.6}}>{e.description}</p></div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:20}}><span style={{fontSize:14,color:"#68716c"}}>30 分钟 · 及格 {e.pass_score} 分</span><b style={{color:"#f26b4a"}}>开始考试 →</b></div></Link>)}</div>:<p className="lead">{message}</p>}</section></main>}
+
+type Exam={id:string;title:string;duration_minutes:number};
+
+export default function ExamList(){
+  const [exams,setExams]=useState<Exam[]>([]);
+  const [message,setMessage]=useState("正在加载考试…");
+
+  useEffect(()=>{
+    supabase?.from("exams")
+      .select("id,title,duration_minutes")
+      .eq("published",true)
+      .order("created_at",{ascending:true})
+      .then(({data,error})=>{
+        if(error)setMessage(error.message);
+        else{setExams(data||[]);setMessage(data?.length?"":"暂无已发布考试")}
+      });
+  },[]);
+
+  const weeks=["一","三","四"];
+
+  return <main>
+    <header>
+      <Link href="/" className="brand">✦ CrossBorder <b>Academy</b></Link>
+      <nav><Link href="/">首页</Link><Link href="/learning">学习中心</Link><a>考试中心</a></nav>
+      <AccountMenu/>
+    </header>
+    <section className="content">
+      <p className="eyebrow">EXAM CENTER</p>
+      <h1>选择考试</h1>
+      <p className="lead">请根据培训周次选择对应考试。</p>
+      {exams.length?<div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:20,maxWidth:1100}}>
+        {exams.map((e,i)=><Link key={e.id} href={"/exams?exam="+e.id} style={{display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:250,padding:26,background:"#fff",border:"1px solid #e5ded2",borderRadius:16,textDecoration:"none",color:"#163d35",boxShadow:"0 12px 30px rgba(22,61,53,.06)"}}>
+          <div>
+            <small style={{display:"inline-block",padding:"6px 10px",borderRadius:999,background:"#e8f0e6",fontWeight:700}}>第 {weeks[i]||i+1} 周</small>
+            <h2 style={{fontSize:24,lineHeight:1.35,margin:"22px 0 10px"}}>{e.title.replace(/考试$/,"")}</h2>
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
+            <span style={{fontSize:14,color:"#68716c"}}>考试时间 90 分钟</span>
+            <b style={{color:"#f26b4a"}}>开始考试 →</b>
+          </div>
+        </Link>)}
+      </div>:<p className="lead">{message}</p>}
+    </section>
+  </main>
+}
