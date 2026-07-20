@@ -27,7 +27,7 @@ export default function Learning(){
       </div>
 
       <h2>四周学习路径</h2>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:14,marginBottom:42}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:14,marginBottom:42}}>
         {weeks.map((week,i)=><div key={week.label} style={{background:"#fff",border:"1px solid #e5ded2",borderRadius:14,padding:"20px 18px",minHeight:155}}>
           <small style={{color:"#587863",fontWeight:700}}>{week.label}</small>
           <h3 style={{fontSize:20,lineHeight:1.35,margin:"12px 0 8px",color:"#163d35"}}>{week.title}</h3>
@@ -35,7 +35,7 @@ export default function Learning(){
         </div>)}
       </div>
 
-      <div style={{display:"grid",gridTemplateColumns:"minmax(0,1.4fr) minmax(280px,.8fr)",gap:20}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:20}}>
         <div>
           <h2>继续学习</h2>
           <div className="learning-card">
