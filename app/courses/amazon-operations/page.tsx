@@ -10,6 +10,16 @@ const lessons = [
   {title:"第一周知识回顾与考试准备",time:"约 10 分钟",done:false},
 ];
 
+const flow = ["① 选品","② 上架测款","③ 优化 Listing","④ 广告拉升","⑤ 稳定放量"];
+const modules = [
+  ["选品","市场调研 → 需求分析 → 竞品分析 → 利润测算"],
+  ["Listing 运营","关键词调研 → 标题与五点 → 主图/A+/视频 → SEO 优化"],
+  ["广告运营","自动广告 → 手动分层 → 否定与出价 → ACOS 复盘"],
+  ["促销活动","Coupon 优惠券 → 秒杀/Deal → 站内外联动"],
+  ["数据分析","流量 → 转化率 → 广告数据 → 库存与利润"],
+  ["日常运营","绩效监控 → 跟卖与 Buy Box → 售后 → 周报复盘"],
+];
+
 export default function AmazonOperations(){
   return <main>
     <header>
@@ -27,6 +37,24 @@ export default function AmazonOperations(){
         <b>第一周学习目标</b>
         <p style={{margin:"12px 0 0",color:"#68716c",lineHeight:1.7}}>了解 Amazon 平台与主要业务模式，掌握账号、Listing、物流库存和客户体验等基础概念，为后续运营实战打好基础。</p>
       </div>
+
+      <section style={{background:"#fff",border:"1px solid #e5ded2",borderRadius:18,padding:"28px 30px",marginBottom:42,boxShadow:"0 10px 24px rgba(22,61,53,.04)"}}>
+        <p className="eyebrow" style={{marginBottom:8}}>运营全景图</p>
+        <h2 style={{margin:"0 0 8px"}}>从选品到稳定放量的完整路径</h2>
+        <p style={{color:"#68716c",margin:"0 0 24px"}}>先理解整体流程，再进入每个模块学习具体方法。</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8,alignItems:"center",marginBottom:26}}>
+          {flow.map((step,i)=><div key={step} style={{display:"flex",alignItems:"center",gap:8}}>
+            <div style={{flex:1,textAlign:"center",padding:"13px 8px",borderRadius:999,background:i===flow.length-1?"#1f9d55":"#2734ae",color:"#fff",fontWeight:700,fontSize:14}}>{step}</div>
+            {i<flow.length-1&&<span style={{color:"#2734ae",fontWeight:700}}>→</span>}
+          </div>)}
+        </div>
+        <div style={{display:"grid",gap:10}}>
+          {modules.map(([name,desc])=><div key={name} style={{display:"grid",gridTemplateColumns:"150px 1fr",gap:14,alignItems:"center",padding:14,border:"1px solid #e5e8ee",borderRadius:10}}>
+            <strong style={{background:"#2734ae",color:"#fff",borderRadius:8,padding:"12px 10px",textAlign:"center"}}>{name}</strong>
+            <span style={{color:"#4e5754",fontSize:14,lineHeight:1.6}}>{desc}</span>
+          </div>)}
+        </div>
+      </section>
 
       <h2>课程章节</h2>
       <div style={{background:"#fff",border:"1px solid #e5ded2",borderRadius:18,padding:"0 22px",maxWidth:980}}>
